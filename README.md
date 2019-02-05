@@ -9,6 +9,8 @@ http-server dist
 npm run server
 
 Open http://127.0.0.1:8080
+
+Stop server->send message->Run server->Client should show messages from bot
 ```
 
 ## Server setup (option)

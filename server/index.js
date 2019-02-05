@@ -7,7 +7,7 @@ const items = [
   'Very well', 'Deal!', 'It’s a great idea!', 'Not a very good idea', 'Don’t mention it!',
   'Things happen.', 'Hello'
 ];
-const messages = [
+let messages = [
   {
     id: '1',
     botId: '2',
@@ -31,15 +31,22 @@ webSocketServer.on('connection', (ws) => {
     const data = JSON.parse(request);
 
     if (data.type === 'GET_ALL_MESSAGES') {
+      data.payload.forEach(m => m.status = 'SENT');
+      messages = messages.concat(data.payload);
+
       ws.send(JSON.stringify({
         type: 'ALL_MESSAGES',
         payload: messages
       }));
+
+      data.payload.forEach((message) => {
+        sendMessage(message);
+      });
     }
 
     if (data.type === 'CREATE_MESSAGES') {
       data.payload.forEach(m => m.status = 'SENT');
-      messages.concat(data.payload);
+      messages = messages.concat(data.payload);
 
       ws.send(JSON.stringify({
         type: 'SENT',

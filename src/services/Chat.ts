@@ -51,10 +51,11 @@ export default class Chat {
         if (!this.isInitLoaded) {
           this.socket.send(JSON.stringify({
             type: 'GET_ALL_MESSAGES',
+            payload: this.pendingData()
           }));
         }
 
-        if (pendingData.length !== 0) {
+        if (pendingData.length !== 0 && this.isInitLoaded) {
           this.socket.send(JSON.stringify({
             type: 'CREATE_MESSAGES',
             payload: this.pendingData(),

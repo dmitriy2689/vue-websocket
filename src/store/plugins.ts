@@ -1,14 +1,15 @@
 import { Store } from 'vuex';
-import RootStore from '@/types/RootStore';
 import Chat from '@/services/Chat';
+import RootStore from '@/types/RootStore';
 import MessageStatus from '@/dictionaries/MessageStatus';
 import ChatCommands from '@/dictionaries/ChatCommands';
+import Mutations from '@/dictionaries/Mutations';
 
 const localStoragePlugin = (store: Store<RootStore>) => {
   const cacheMessages = localStorage.getItem('CHAT');
 
   if (cacheMessages != null) {
-    store.commit('ADD_MESSAGES', JSON.parse(cacheMessages));
+    store.commit(Mutations.ADD_MESSAGES, JSON.parse(cacheMessages));
   }
 
   store.subscribe((mutation, { messages }) => {
@@ -40,16 +41,16 @@ const socketPlugin = (store: Store<RootStore>) => {
 
   chat.onmessage = (res: any) => {
     if (res.type === ChatCommands.NEW_MESSAGE) {
-      store.commit('ADD_MESSAGE', res.payload);
+      store.commit(Mutations.ADD_MESSAGE, res.payload);
     }
 
     if (res.type === ChatCommands.ALL_MESSAGES) {
-      store.commit('ADD_MESSAGES', res.payload);
-      store.commit('CHANGE_IS_INIT_LOADED', true);
+      store.commit(Mutations.ADD_MESSAGES, res.payload);
+      store.commit(Mutations.CHANGE_IS_INIT_LOADED, true);
     }
 
     if (res.type === ChatCommands.SENT) {
-      store.commit('CHANGE_STATUS_MESSAGES', {
+      store.commit(Mutations.CHANGE_STATUS_MESSAGES, {
         ...res.payload,
         messages: store.getters.pandingMessages(),
         status: MessageStatus.SENT,
@@ -58,7 +59,7 @@ const socketPlugin = (store: Store<RootStore>) => {
   };
 
   store.subscribe((mutation) => {
-    if (mutation.type === 'CREATE_MESSAGE') {
+    if (mutation.type === Mutations.CREATE_MESSAGE) {
       chat.send({
         type: ChatCommands.CREATE_MESSAGE,
         payload: mutation.payload

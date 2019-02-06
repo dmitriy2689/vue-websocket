@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import plugins from './plugins';
 import MessageStatus from '@/dictionaries/MessageStatus';
+import Mutations from '@/dictionaries/Mutations';
 import RootState from '@/types/RootStore';
 import MessageType from '@/types/MessageType';
 import ContactType from '@/types/ContactType';
@@ -9,22 +10,22 @@ import ContactType from '@/types/ContactType';
 Vue.use(Vuex);
 
 export const mutations = {
-  CHANGE_IS_INIT_LOADED(state: RootState, value: boolean) {
+  [Mutations.CHANGE_IS_INIT_LOADED](state: RootState, value: boolean) {
     state.isInitLoaded = value;
   },
-  SELECT_BOT(state: RootState, id: string) {
+  [Mutations.SELECT_BOT](state: RootState, id: string) {
     state.botId = id;
   },
-  CREATE_MESSAGE(state: RootState, message: MessageType) {
+  [Mutations.CREATE_MESSAGE](state: RootState, message: MessageType) {
     state.messages.push(message);
   },
-  ADD_MESSAGE(state: RootState, message: MessageType) {
+  [Mutations.ADD_MESSAGE](state: RootState, message: MessageType) {
     state.messages.push(message);
   },
-  ADD_MESSAGES(state: RootState, messages: MessageType[]) {
+  [Mutations.ADD_MESSAGES](state: RootState, messages: MessageType[]) {
     state.messages = messages;
   },
-  CHANGE_STATUS_MESSAGES(
+  [Mutations.CHANGE_STATUS_MESSAGES](
     state: RootState | null,
     payload: { messages: MessageType[], ids: string[], status: MessageStatus },
   ) {
@@ -73,7 +74,7 @@ export default new Vuex.Store({
   mutations,
   actions: {
     selectBot({ commit }, id: string) {
-      commit('SELECT_BOT', id);
+      commit(Mutations.SELECT_BOT, id);
     },
     sendMessage({ commit, state }, content) {
       const message: MessageType = {
@@ -85,7 +86,7 @@ export default new Vuex.Store({
         content,
       };
 
-      commit('CREATE_MESSAGE', message);
+      commit(Mutations.CREATE_MESSAGE, message);
     },
   },
   plugins,

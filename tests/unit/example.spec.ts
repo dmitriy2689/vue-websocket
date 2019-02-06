@@ -5,6 +5,7 @@ describe('Store', () => {
   describe('Mutations', () => {
     it('SELECT_BOT should change botId', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [],
@@ -16,6 +17,7 @@ describe('Store', () => {
 
     it('CREATE_MESSAGE should add new message', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [],
@@ -36,6 +38,7 @@ describe('Store', () => {
 
     it('ADD_MESSAGES should add new messages', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [],
@@ -75,6 +78,7 @@ describe('Store', () => {
   describe('Getters', () => {
     it('contacts should return contacts without current user', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [{ id: '1', name: 'Dima'}, { id: '2', name: 'Bot1' }],
@@ -88,6 +92,7 @@ describe('Store', () => {
 
     it('currentChat should return messages from current bot', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [{ id: '1', name: 'Dima'}, { id: '2', name: 'Bot1' }],
@@ -121,6 +126,7 @@ describe('Store', () => {
 
     it('pandingMessages should return pending messages', () => {
       const state = {
+        isInitLoaded: false,
         userId: '1',
         botId: '2',
         contacts: [{ id: '1', name: 'Dima'}, { id: '2', name: 'Bot1' }],

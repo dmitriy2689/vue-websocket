@@ -2,6 +2,7 @@ import { Store } from 'vuex';
 import RootStore from '@/types/RootStore';
 import Chat from '@/services/Chat';
 import MessageStatus from '@/dictionaries/MessageStatus';
+import ChatCommands from '@/dictionaries/ChatCommands';
 
 const localStoragePlugin = (store: Store<RootStore>) => {
   const cacheMessages = localStorage.getItem('CHAT');
@@ -24,30 +25,30 @@ const socketPlugin = (store: Store<RootStore>) => {
 
     if (!isInitLoaded) {
       chat.send({
-        type: 'GET_ALL_MESSAGES',
+        type: ChatCommands.GET_ALL_MESSAGES,
         payload: pendingData
       });
     }
 
     if (pendingData.length !== 0 && isInitLoaded) {
       chat.send({
-        type: 'CREATE_MESSAGES',
+        type: ChatCommands.CREATE_MESSAGES,
         payload: pendingData,
       });
     }
   }
 
   chat.onmessage = (res: any) => {
-    if (res.type === 'NEW_MESSAGE') {
+    if (res.type === ChatCommands.NEW_MESSAGE) {
       store.commit('ADD_MESSAGE', res.payload);
     }
 
-    if (res.type === 'ALL_MESSAGES') {
+    if (res.type === ChatCommands.ALL_MESSAGES) {
       store.commit('ADD_MESSAGES', res.payload);
       store.commit('CHANGE_IS_INIT_LOADED', true);
     }
 
-    if (res.type === 'SENT') {
+    if (res.type === ChatCommands.SENT) {
       store.commit('CHANGE_STATUS_MESSAGES', {
         ...res.payload,
         messages: store.getters.pandingMessages(),
@@ -59,7 +60,7 @@ const socketPlugin = (store: Store<RootStore>) => {
   store.subscribe((mutation) => {
     if (mutation.type === 'CREATE_MESSAGE') {
       chat.send({
-        type: 'CREATE_MESSAGE',
+        type: ChatCommands.CREATE_MESSAGE,
         payload: mutation.payload
       });
     }

@@ -1,3 +1,5 @@
+import ChatMessageType from '@/types/ChatMessageType';
+
 export default class Chat {
 
   private socket!: WebSocket;
@@ -13,7 +15,7 @@ export default class Chat {
   public onmessage!: Function;
   public onopen!: Function;
 
-  public send = (data: any) => {
+  public send = (data: ChatMessageType) => {
     try {
       this.socket.send(JSON.stringify(data));
     } catch (e) {

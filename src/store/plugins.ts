@@ -1,6 +1,7 @@
 import { Store } from 'vuex';
 import Chat from '@/services/Chat';
 import RootStore from '@/types/RootStore';
+import ChatMessageType from '@/types/ChatMessageType';
 import MessageStatus from '@/dictionaries/MessageStatus';
 import ChatCommands from '@/dictionaries/ChatCommands';
 import Mutations from '@/dictionaries/Mutations';
@@ -39,7 +40,7 @@ const socketPlugin = (store: Store<RootStore>) => {
     }
   }
 
-  chat.onmessage = (res: any) => {
+  chat.onmessage = (res: ChatMessageType) => {
     if (res.type === ChatCommands.NEW_MESSAGE) {
       store.commit(Mutations.ADD_MESSAGE, res.payload);
     }

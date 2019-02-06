@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Actions from '@/dictionaries/Actions';
 import Message from './Message.vue';
 
 @Component({
@@ -44,10 +45,7 @@ export default class Chat extends Vue {
   content = '';
 
   sendMessage() {
-    this.$store.dispatch('sendMessage', this.content)
-      .catch(() => {
-        console.log('Error');
-      });
+    this.$store.dispatch(Actions.sendMessage, this.content);
     this.content = '';
   }
 }

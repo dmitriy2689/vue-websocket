@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Actions from '@/dictionaries/Actions';
 import ContactType from '@/types/ContactType';
 
 @Component({
@@ -32,7 +33,7 @@ export default class BotMenuItem extends Vue {
   @Prop() private bot!: ContactType;
 
   selectBot($event: any) {
-    this.$store.dispatch('selectBot', this.bot.id);
+    this.$store.dispatch(Actions.selectBot, this.bot.id);
 
     $event.preventDefault();
   }

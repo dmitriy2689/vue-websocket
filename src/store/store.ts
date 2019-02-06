@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import plugins from './plugins';
 import MessageStatus from '@/dictionaries/MessageStatus';
 import Mutations from '@/dictionaries/Mutations';
+import Actions from '@/dictionaries/Actions';
 import RootState from '@/types/RootStore';
 import MessageType from '@/types/MessageType';
 import ContactType from '@/types/ContactType';
@@ -73,10 +74,10 @@ export default new Vuex.Store({
   getters,
   mutations,
   actions: {
-    selectBot({ commit }, id: string) {
+    [Actions.selectBot]({ commit }, id: string) {
       commit(Mutations.SELECT_BOT, id);
     },
-    sendMessage({ commit, state }, content) {
+    [Actions.sendMessage]({ commit, state }, content) {
       const message: MessageType = {
         id: Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36),
         botId: state.botId,

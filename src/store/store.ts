@@ -77,7 +77,7 @@ export default new Vuex.Store({
     [Actions.selectBot]({ commit }, id: string) {
       commit(Mutations.SELECT_BOT, id);
     },
-    [Actions.sendMessage]({ commit, state }, content) {
+    [Actions.sendMessage]({ commit, state }, content: string) {
       const message: MessageType = {
         id: Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36),
         botId: state.botId,

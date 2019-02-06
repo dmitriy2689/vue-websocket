@@ -68,6 +68,18 @@ export default new Vuex.Store({
         id: '3',
         name: 'Bot2',
       },
+      {
+        id: '4',
+        name: 'Bot3',
+      },
+      {
+        id: '5',
+        name: 'Bot4',
+      },
+      {
+        id: '6',
+        name: 'Bot5',
+      },
     ],
     messages: [],
   },

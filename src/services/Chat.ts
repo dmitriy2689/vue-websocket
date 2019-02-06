@@ -1,11 +1,9 @@
 export default class Chat {
-  private socket!: WebSocket;
 
-  private isInitLoaded = false;
+  private socket!: WebSocket;
 
   constructor(
     private url: string,
-    private pendingData: Function,
     private autoReconnectInterval: number = 1000,
   ) {
     this.open();
@@ -13,13 +11,11 @@ export default class Chat {
   }
 
   public onmessage!: Function;
+  public onopen!: Function;
 
   public send = (data: any) => {
     try {
-      this.socket.send(JSON.stringify({
-        type: 'CREATE_MESSAGE',
-        payload: data,
-      }));
+      this.socket.send(JSON.stringify(data));
     } catch (e) {
       console.log(e);
     }
@@ -46,34 +42,18 @@ export default class Chat {
   private subscribe = () => {
     this.socket.onopen = () => {
       try {
-        const pendingData = this.pendingData();
-
-        if (!this.isInitLoaded) {
-          this.socket.send(JSON.stringify({
-            type: 'GET_ALL_MESSAGES',
-            payload: this.pendingData()
-          }));
-        }
-
-        if (pendingData.length !== 0 && this.isInitLoaded) {
-          this.socket.send(JSON.stringify({
-            type: 'CREATE_MESSAGES',
-            payload: this.pendingData(),
-          }));
-        }
+        this.onopen();
       } catch (e) {
         console.log(e);
       }
     };
 
     this.socket.onmessage = (event) => {
-      const response = JSON.parse(event.data);
-
-      if (response.type === 'ALL_MESSAGES') {
-        this.isInitLoaded = true;
+      try {
+        this.onmessage(JSON.parse(event.data));
+      } catch (e) {
+        console.log(e);
       }
-
-      this.onmessage(response);
     };
 
     this.socket.onerror = (event) => {

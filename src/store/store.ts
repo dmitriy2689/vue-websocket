@@ -9,6 +9,9 @@ import ContactType from '@/types/ContactType';
 Vue.use(Vuex);
 
 export const mutations = {
+  CHANGE_IS_INIT_LOADED(state: RootState, value: boolean) {
+    state.isInitLoaded = value;
+  },
   SELECT_BOT(state: RootState, id: string) {
     state.botId = id;
   },
@@ -47,6 +50,7 @@ export const getters = {
 
 export default new Vuex.Store({
   state: {
+    isInitLoaded: false,
     userId: '1',
     botId: '2',
     contacts: [

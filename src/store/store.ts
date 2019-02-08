@@ -17,8 +17,18 @@ export const mutations = {
   [Mutations.SELECT_BOT](state: RootState, id: string) {
     state.botId = id;
   },
-  [Mutations.CREATE_MESSAGE](state: RootState, message: MessageType) {
-    state.messages.push(message);
+  [Mutations.CREATE_MESSAGE](
+    state: RootState,
+    payload: { id: string, content: string }
+  ) {
+    state.messages.push({
+      id: payload.id,
+      botId: state.botId,
+      fromId: state.userId,
+      status: MessageStatus.PENDING,
+      date: new Date().toDateString(),
+      content: payload.content,
+    });
   },
   [Mutations.ADD_MESSAGE](state: RootState, message: MessageType) {
     state.messages.push(message);
@@ -89,18 +99,12 @@ export default new Vuex.Store({
     [Actions.selectBot]({ commit }, id: string) {
       commit(Mutations.SELECT_BOT, id);
     },
-    [Actions.sendMessage]({ commit, state }, content: string) {
-      const message: MessageType = {
+    [Actions.sendMessage]({ commit }, content: string) {
+      commit(Mutations.CREATE_MESSAGE, {
         id: Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36),
-        botId: state.botId,
-        fromId: state.userId,
-        status: MessageStatus.PENDING,
-        date: new Date().toDateString(),
-        content,
-      };
-
-      commit(Mutations.CREATE_MESSAGE, message);
-    },
+        content
+      });
+    }
   },
   plugins,
 });

@@ -1,10 +1,11 @@
 import { mutations, getters } from '@/store/store';
+import RootStore from '@/types/RootStore';
 import MessageStatus from '@/dictionaries/MessageStatus';
 
 describe('Store', () => {
   describe('Mutations', () => {
     it('SELECT_BOT should change botId', () => {
-      const state = {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
@@ -16,7 +17,21 @@ describe('Store', () => {
     });
 
     it('CREATE_MESSAGE should add new message', () => {
-      const state = {
+      const state: RootStore = {
+        isInitLoaded: false,
+        userId: '1',
+        botId: '2',
+        contacts: [],
+        messages: []
+      };
+      expect(state.messages.length).toBe(0);
+      mutations.CREATE_MESSAGE(state, { id: '1', content: 'Hello' });
+      expect(state.messages.length).toBe(1);
+      expect(state.messages[0].id).toBe('1');
+    });
+
+    it('ADD_MESSAGE should add message', () => {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
@@ -37,7 +52,7 @@ describe('Store', () => {
     });
 
     it('ADD_MESSAGES should add new messages', () => {
-      const state = {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
@@ -77,7 +92,7 @@ describe('Store', () => {
 
   describe('Getters', () => {
     it('contacts should return contacts without current user', () => {
-      const state = {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
@@ -91,7 +106,7 @@ describe('Store', () => {
     });
 
     it('currentChat should return messages from current bot', () => {
-      const state = {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
@@ -125,7 +140,7 @@ describe('Store', () => {
     });
 
     it('pandingMessages should return pending messages', () => {
-      const state = {
+      const state: RootStore = {
         isInitLoaded: false,
         userId: '1',
         botId: '2',
